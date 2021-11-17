@@ -2,40 +2,31 @@ package wps;
 
 import java.util.Objects;
 
-import gis.Coordinate;
-
-public class Painting {
+public record Painting(int price, int height) {
 	
-	private double height;
-	
-	private double price;
-	
-	public Painting(int price, int height) {
-		this.height = height;
-		this.price = price;
-	}
-	
+	//return true if the dali can match this picasso
 	public boolean canMatchDali(Painting dali) {
-		return this.validate().height < dali.validate().height;
+		return validate(this).height < validate(dali).height;
 	}
 	
 	
-	public double getHeight() {
+	public Integer getHeight() {
 		return height;
 	}
 	
-	public double getPrice() {
+	public Integer getPrice() {
 		return price;
 	}
 	
-	public Painting validate() {
+	//error handling
+	public final Painting validate() {
 		if (price <= 0 || height <= 0) {
-			throw new NullPointerException("price or/and height is invalid");
+			throw new IllegalArgumentException("price or/and height is invalid");
 		}
 		return this;
 	}
 	
-	public Painting validate(Painting painting) {
+	public static final Painting validate(Painting painting) {
 		Objects.requireNonNull(painting);
 		return painting.validate();
 	}
@@ -43,4 +34,5 @@ public class Painting {
 	public String toString() {
 		return "($" + price + ", " + height + "cm)";
 	}
+	
 }
